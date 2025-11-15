@@ -1,0 +1,40 @@
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pipeline_train_backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # 🧩 Monta o app normalmente
+      - ./backend/app:/app/app
+
+      # 🧠 Volumes extras redirecionados para o disco M:
+      - "M:/Mestrado/aqui/docker_data/storage:/app/storage"
+      - "M:/Mestrado/aqui/docker_data/cache:/root/.cache"
+      - "M:/Mestrado/pipeline_train/backend/app/storage/datasets_yolo:/app/storage/datasets_yolo"
+      - ./predictions:/app/predictions
+
+    environment:
+      # 🧠 Variáveis para frameworks como PyTorch, Transformers, YOLO etc.
+      - TRANSFORMERS_CACHE=/root/.cache/huggingface
+      - HF_HOME=/root/.cache/huggingface
+      - TORCH_HOME=/root/.cache/torch
+      - MPLCONFIGDIR=/root/.cache/matplotlib
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pipeline_train_frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend/public:/usr/share/nginx/html:ro
+    restart: unless-stopped

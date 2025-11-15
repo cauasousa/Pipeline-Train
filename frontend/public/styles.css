@@ -1,0 +1,531 @@
+/* Global */
+body {
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow: auto;
+}
+
+/* Sidebar */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: var(--sidebar-width);
+    background: linear-gradient(180deg, var(--surface), #EDF2F7);
+    border-right: 1px solid var(--border);
+    padding: 18px;
+    box-sizing: border-box;
+    z-index: 1000;
+    transition: width .2s ease;
+    color: var(--text-primary);
+}
+
+.sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+/* Toggle button */
+.toggle-btn {
+    font-size: 20px;
+    cursor: pointer;
+    margin-bottom: 14px;
+    color: var(--muted);
+}
+
+/* Menu items */
+.menu-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--text-primary);
+}
+
+.menu-item i {
+    margin-right: 10px;
+    color: var(--color-accent);
+}
+
+.menu-item:hover,
+.menu-item.active {
+    background: rgba(74, 144, 226, 0.10);
+    box-shadow: 0 4px 12px var(--elevation);
+    border-left: 3px solid var(--color-primary);
+}
+
+.sidebar.collapsed .menu-item span {
+    display: none;
+}
+
+/* Main content */
+.main-content {
+    position: relative;
+    margin-left: var(--sidebar-width);
+    /* ensure content is shifted right of sidebar */
+    margin-right: var(--rightpanel-width);
+    padding: 20px;
+    min-height: 100vh;
+    box-sizing: border-box;
+    overflow-y: auto;
+    transition: margin-left .25s ease, margin-right .25s ease;
+    z-index: 1;
+    background: transparent;
+    color: var(--text-primary);
+}
+
+.main-content.collapsed {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+/* Right panel */
+.right-panel {
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: var(--rightpanel-width);
+    background: var(--surface);
+    border-left: 1px solid var(--border);
+    padding: 18px;
+    box-sizing: border-box;
+    z-index: 900;
+    overflow: auto;
+}
+
+/* Logs area inside right panel */
+.log-area {
+    height: 46%;
+    background: #FFFFFF;
+    border: 1px solid var(--border);
+    padding: 10px;
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: monospace;
+    font-size: 12px;
+    overflow: auto;
+    box-shadow: 0 4px 12px var(--elevation);
+}
+
+/* Form elements */
+.form-group {
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    display: inline-flex;
+    margin-bottom: 6px;
+    color: var(--muted);
+    font-size: 14px;
+}
+
+input[type="text"],
+input[type="number"],
+select,
+textarea {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: #FFFFFF;
+    color: var(--text-primary);
+    box-sizing: border-box;
+}
+
+/* Fix: ensure inline checkbox+label groups align horizontally */
+.form-group .flex {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    /* avoid overflow on very small widths */
+}
+
+.form-group .flex input[type="checkbox"],
+.form-group .flex input[type="radio"] {
+    margin: 0;
+    vertical-align: middle;
+    width: 18px;
+    height: 18px;
+}
+
+.form-group .flex label {
+    margin: 0;
+    vertical-align: middle;
+    font-size: 14px;
+}
+
+/* ensure dynamically injected model labels align too */
+#models-container label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px;
+    border-radius: 6px;
+}
+
+/* Buttons */
+.btn {
+    display: inline-block;
+    background: var(--color-primary);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform .06s ease, box-shadow .08s ease;
+    box-shadow: 0 6px 18px rgba(74, 144, 226, 0.12);
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(74, 144, 226, 0.14);
+}
+
+.btn:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Success / accent helpers */
+.btn-success {
+    background: var(--color-success);
+    color: #043028;
+}
+
+.icon-accent {
+    color: var(--color-accent);
+}
+
+/* Cards / charts / table */
+.card {
+    background: var(--surface);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    padding: 12px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px var(--elevation);
+}
+
+.chart-placeholder {
+    height: 300px;
+    background: linear-gradient(180deg, rgba(234, 236, 241, 0.6), rgba(255, 255, 255, 0.4));
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+}
+
+.grid {
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+.table th,
+.table td {
+    padding: 8px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    color: var(--text-primary);
+}
+
+.table th {
+    background: transparent;
+    color: var(--text-muted);
+    font-weight: 700;
+}
+
+/* Small refinements */
+textarea#logs {
+    width: 100%;
+    min-height: 140px;
+    padding: 10px;
+    border-radius: 8px;
+    background: #FFFFFF;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+}
+
+/* Utility: error messages */
+.alert-error {
+    background: rgba(255, 107, 107, 0.06);
+    border: 1px solid rgba(255, 107, 107, 0.18);
+    color: var(--danger);
+    padding: 8px;
+    border-radius: 6px;
+}
+
+/* utility */
+.hidden {
+    display: none !important;
+}
+
+/* spacing for folder input */
+#prediction-folder-input input {
+    margin-top: 6px;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: #FFFFFF;
+    color: var(--text-primary);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Summary card uses surface + text */
+#selected-summary {
+    padding: 10px;
+    border-radius: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+/* Prediction results: stack models vertically and style each model as a card */
+.prediction-results {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding-top: 8px;
+}
+
+/* Model card: usar 100% para garantir empilhamento vertical consistente */
+.model-result {
+    width: 100%;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 14px;
+    box-shadow: 0 6px 18px rgba(20, 30, 40, 0.04);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-sizing: border-box;
+}
+
+/* Model images: garantir um grid 2xN responsivo */
+.model-images {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
+    gap: 12px;
+    align-items: start;
+}
+
+/* garantir que as cards de imagem preenchem a célula */
+/* Card de imagem */
+.model-images .card {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 8px;
+    padding: 6px;
+    /* opcional, remove se quiser imagem maior */
+    box-sizing: border-box;
+    background: var(--surface);
+}
+
+
+/* imagens maiores e responsivas */
+.model-images .card img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16/9;
+    /* mantém proporção agradável */
+    object-fit: cover;
+    border-radius: 6px;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    cursor: pointer;
+    min-height: 180px;
+    /* garante miniatura com boa altura */
+}
+
+
+/* Hover */
+.model-images .card img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Mobile: cair para 1 coluna em telas pequenas */
+/* Em telas pequenas, 1 coluna */
+@media (max-width: 640px) {
+    .model-images {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Tweak spacing of the summary area */
+#selected-summary {
+    margin-top: 12px;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+/* Responsivity */
+@media (max-width: 900px) {
+    :root {
+        --rightpanel-width: 0px;
+    }
+
+    .main-content {
+        margin-right: 0;
+    }
+
+    .right-panel {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        width: var(--sidebar-collapsed-width);
+    }
+
+    .main-content {
+        margin-left: var(--sidebar-collapsed-width);
+        margin-right: 0;
+    }
+}
+
+/* Image modal styles */
+.img-modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+.img-modal:not(.hidden) {
+    pointer-events: auto;
+}
+
+.img-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    transition: opacity .18s ease;
+}
+
+.img-modal-content {
+    position: relative;
+    z-index: 10000;
+    max-width: 92%;
+    max-height: 92%;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+.img-modal img {
+    max-width: 100%;
+    max-height: 80vh;
+    width: auto;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+    display: block;
+    object-fit: contain;
+}
+
+.img-modal-caption {
+    margin-top: 8px;
+    color: #fff;
+    text-align: center;
+    font-size: 13px;
+}
+
+.img-modal-close {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10001;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 8px;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+}
+
+.img-modal.hidden {
+    display: none;
+}
+
+@media (max-width: 640px) {
+    .img-modal img {
+        max-height: 65vh;
+    }
+
+    .img-modal-content {
+        padding: 8px;
+    }
+}
+
+/* Config panel styles */
+.config-card {
+    background: linear-gradient(180deg, #ffffff, #fbfdff);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    padding: 12px;
+    border-radius: 10px;
+}
+
+.config-preview {
+    background: #0f1724;
+    color: #e6f2ff;
+    padding: 12px;
+    border-radius: 8px;
+    max-height: 280px;
+    overflow: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    font-size: 13px;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.config-editor {
+    margin-top: 10px;
+}
+
+.config-textarea {
+    width: 100%;
+    min-height: 240px;
+    max-height: 60vh;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+    font-size: 13px;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+/* small button tweaks for config actions */
+#edit-config-btn,
+#save-config-btn,
+#cancel-config-btn,
+#reset-config-btn {
+    font-size: 13px;
+    padding: 6px 10px;
+}
