@@ -1,6 +1,7 @@
 (function (global) {
     // minimal network helpers and endpoints
-    const API_BASE = window.location.hostname === "localhost" ? "http://localhost:8000" : "http://backend:8000";
+    // const API_BASE = window.location.hostname === "localhost" ? "http://localhost:8000" : "http://backend:8000";
+    const API_BASE = "https://efficacious-fanciful-vera.ngrok-free.dev";
 
     async function safeFetch(url, opts) {
         try {
