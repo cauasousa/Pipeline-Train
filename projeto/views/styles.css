@@ -68,10 +68,8 @@ body {
 .main-content {
     position: relative;
     margin-left: var(--sidebar-width);
-    /* ensure content is shifted right of sidebar */
-    margin-right: var(--rightpanel-width);
-    padding: 20px;
     min-height: 100vh;
+    padding: 10px 20px;
     box-sizing: border-box;
     overflow-y: auto;
     transition: margin-left .25s ease, margin-right .25s ease;
@@ -79,39 +77,84 @@ body {
     background: transparent;
     color: var(--text-primary);
 }
+.card-section {
+    margin-bottom: 10px;
+    padding: 2px; /* Aumenta o padding interno para organização */
+}
+
+/* --- Estilos para Comparação Lado a Lado --- */
+
+/* Contêiner principal para o grupo de comparação de UMA imagem */
+.image-comparison-group {
+    /* Manter estilos de card/seção */
+    padding: 16px; 
+    /* 🛑 GARANTA QUE ESTA CLASSE TENHA BACKGROUND: var(--surface) SE NECESSÁRIO */
+    background: var(--surface); 
+    border-radius: 8px;
+}
+
+/* Define o GRID FLEXÍVEL que alinha as predições de diferentes modelos lado a lado */
+.comparison-grid {
+    display: grid;
+    /* Ajusta para até 4 colunas em telas grandes, mas permite menos se não houver espaço */
+    /* Diminuímos o minmax para permitir colunas menores */
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* <-- AJUSTADO AQUI */
+    gap: 15px; 
+    align-items: start;
+    margin-top: 10px;
+}
+
+/* Cartão individual de predição (um modelo por coluna) */
+/* Cartão individual de predição (um modelo por coluna) */
+.comparison-card {
+    /* Mantém as regras de layout e espaçamento */
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 12px; /* Aumentado para melhor visual */
+    
+    /* 🛑 ADICIONE ESTILOS DE CARTÃO AQUI para que pareça um quadro/card */
+    background: #FFFFFF; /* Fundo branco/claro */
+    border: 1px solid var(--border);
+    border-radius: 10px; /* Bordas arredondadas */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra suave */
+}
+
+.comparison-card .model-name-label {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+/* Reutilizando estilos de imagem, mas corrigindo aspecto-ratio para ser mais quadrado (comum em classificação) */
+/* 🛑 AJUSTE PRINCIPAL AQUI: DIMINUINDO O TAMANHO DA IMAGEM */
+.comparison-card img {
+    display: block;
+    width: 100%;             /* Garante que a imagem ocupe a largura total do seu contêiner */
+    /* max-height: 180px; */
+    object-fit: contain;     /* Garante que a imagem inteira seja visível, sem cortar */
+    aspect-ratio: 1 / 1;     /* Tenta manter a imagem quadrada, mas 'contain' é prioritário */
+    border-radius: 6px;
+    background: #FFFFFF;     /* Fundo branco para imagens com transparência ou espaço */
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+    cursor: pointer;
+}
+
+/* Adicione também um hover para o zoom no clique */
+.comparison-card img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Remova ou substitua as regras antigas de .model-images se não for mais usá-las */
+/* Se houver conflito, remova .model-images e .model-result antigos. */
 
 .main-content.collapsed {
     margin-left: var(--sidebar-collapsed-width);
 }
 
-/* Right panel */
-.right-panel {
-    position: fixed;
-    right: 0;
-    top: 0;
-    height: 100%;
-    width: var(--rightpanel-width);
-    background: var(--surface);
-    border-left: 1px solid var(--border);
-    padding: 18px;
-    box-sizing: border-box;
-    z-index: 900;
-    overflow: auto;
-}
 
-/* Logs area inside right panel */
-.log-area {
-    height: 46%;
-    background: #FFFFFF;
-    border: 1px solid var(--border);
-    padding: 10px;
-    border-radius: 8px;
-    color: var(--text-primary);
-    font-family: monospace;
-    font-size: 12px;
-    overflow: auto;
-    box-shadow: 0 4px 12px var(--elevation);
-}
 
 /* Form elements */
 .form-group {
@@ -137,6 +180,7 @@ textarea {
     color: var(--text-primary);
     box-sizing: border-box;
 }
+
 
 /* Fix: ensure inline checkbox+label groups align horizontally */
 .form-group .flex {
@@ -377,17 +421,14 @@ textarea#logs {
 
 /* Responsivity */
 @media (max-width: 900px) {
-    :root {
-        --rightpanel-width: 0px;
-    }
+   
+    
 
     .main-content {
         margin-right: 0;
     }
 
-    .right-panel {
-        display: none;
-    }
+    
 }
 
 @media (max-width: 600px) {
@@ -398,6 +439,12 @@ textarea#logs {
     .main-content {
         margin-left: var(--sidebar-collapsed-width);
         margin-right: 0;
+    }
+    .comparison-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); /* Ainda menores em mobile */
+    }
+    .comparison-card img {
+        max-height: 120px; /* Reduz ainda mais a altura em telas pequenas */
     }
 }
 

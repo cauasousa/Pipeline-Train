@@ -117,5 +117,10 @@
         }
     }
 
-    global.API = Object.assign(global.API || {}, { API_BASE, safeFetch, testIsImage, getLastDir, getModels, postPredict, getPredictionsList, listModelsInRun });
+    async function getDatasets() {
+        const r = await safeFetch(`${API_BASE}/train/datasets`);
+        return r?.datasets ?? [];
+    }
+
+    global.API = Object.assign(global.API || {}, { API_BASE, safeFetch, testIsImage, getLastDir, getModels, postPredict, getPredictionsList, listModelsInRun, getDatasets });
 })(window);

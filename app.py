@@ -13,13 +13,10 @@ CORS(app, resources={r"/api/*": {"origins": "*"}, r"/predictions/*": {"origins":
 try:
     from projeto.app.routes import training as training_mod
     from projeto.app.routes import prediction as prediction_mod
-    from projeto.app.routes import metrics as metrics_mod
-    from projeto.app.routes import history as history_mod
-
+    
     app.register_blueprint(training_mod.bp, url_prefix="/train")
     app.register_blueprint(prediction_mod.bp, url_prefix="/predict")
-    app.register_blueprint(metrics_mod.bp, url_prefix="/metrics")
-    app.register_blueprint(history_mod.bp, url_prefix="/history")
+    
 except Exception as e:
     # log simples para facilitar debug se a importação falhar
     print("Falha ao importar blueprints de projeto.app.routes:", e)
@@ -126,4 +123,4 @@ def serve_frontend(path):
 
 if __name__ == "__main__":
     # Executar localmente em uma porta só (8000)
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)), debug=True)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8000)), debug=True, threaded=True)

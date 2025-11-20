@@ -1,20 +1,24 @@
 <div class="section" id="training-page">
     <h2>🧠 Treinamento</h2>
+    
+    <hr style="margin: 15px 0;">
 
-    <!-- Seleção de Dataset -->
-    <div class="form-group">
-        <label><strong>Seleção de Dataset</strong></label>
-        <select id="dataset-select"></select>
-        <button class="btn" id="upload-dataset-btn">📁 Upload Imagens</button>
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="form-group">
+            <label><strong>1. Seleção de Dataset</strong></label>
+            <div style="display:flex; gap: 10px; align-items: center;">
+                <select id="dataset-select" style="flex-grow: 1;"></select>
+                <button class="btn" id="upload-dataset-btn" style="flex-shrink: 0;">📁 Upload Pasta</button>
+            </div>
+        </div>
     </div>
-
-    <!-- Configurações do Dataset -->
-    <div class="form-group">
-        <label><strong>Configurações do Dataset</strong></label>
-        <p style="font-size:0.9rem; color:#666">
-            Ajuste as proporções de treino, validação e teste para conjunto de imagens enviados (total deve ser sempre 100%).
+    
+    <div class="card config-card" style="margin-bottom: 20px;">
+        <label><strong>2. Divisão do Conjunto de Dados (Upload)</strong></label>
+        <p style="font-size:0.9rem; color:var(--text-muted)">
+            Ajuste as proporções de treino, validação e teste para o conjunto de imagens enviado (total = 100%).
         </p>
-        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;">
             <div>
                 <label>Train (%)</label>
                 <input type="number" id="train-percent" class="input" value="70" min="0" max="100">
@@ -29,70 +33,57 @@
             </div>
         </div>
 
-        <hr style="margin:10px 0;">
-
-        <label><strong>Tipos de Imagens a Incluir</strong></label>
-        <p style="font-size:0.9rem; color:#666">Selecione os tipos desejados:</p>
-        <div id="tipo-checkboxes" style="display:flex; flex-wrap:wrap; gap:10px;">
+        <hr style="margin:15px 0;">
+        
+        <label><strong>Tipos de Imagens a Incluir (Dados de Negativos)</strong></label>
+        <p style="font-size:0.9rem; color:var(--text-muted)">Selecione os tipos de implantes para o conjunto de 'negativos'.</p>
+        <div id="tipo-checkboxes-tipos" style="display:flex; flex-wrap:wrap; gap:10px;">
             <label><input type="checkbox" value="Cone"> Cone Morse</label>
             <label><input type="checkbox" value="Hex Externo"> Hex. Externo</label>
             <label><input type="checkbox" value="Hex Interno"> Hex. Interno</label>
         </div>
 
-        <div style="margin-top:10px;">
-            <label>Quantidade Aleatória (Ex.: Colocando 100 = 100 CN + 100 HE + 100 HI)</label>
+        <div style="margin-top:15px;">
+            <label>Quantidade Aleatória por Tipo</label>
+            <p style="font-size:0.9rem; color:var(--text-muted)">Ex.: 100 = 100 Cone + 100 Hex. Externo...</p>
             <input type="number" id="random-count" class="input" value="100" min="0">
         </div>
 
-        <!-- <hr style="margin:10px 0;"> -->
-        <h1></h1>
-        <label><strong>Separação do Conjunto Aleatório</strong></label>
-        <p style="font-size:0.9rem; color:#666">Defina como dividir o conjunto aleatório:</p>
-        <div style="display:flex; flex-wrap:wrap;">
-            <div>
-                <label>Train (%)</label>
-                <input type="number" id="rand-train-percent" class="input" value="70" min="0" max="100">
-            </div>
-            <div>
-                <label>Val (%)</label>
-                <input type="number" id="rand-val-percent" class="input" value="20" min="0" max="100">
-            </div>
-            <div>
-                <label>Test (%)</label>
-                <input type="number" id="rand-test-percent" class="input" value="10" min="0" max="100">
+        <div style="margin-top:15px;">
+            <label>Separação do Conjunto Aleatório</label>
+            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                <div><label>Train (%)</label><input type="number" id="rand-train-percent" class="input" value="70" min="0" max="100"></div>
+                <div><label>Val (%)</label><input type="number" id="rand-val-percent" class="input" value="20" min="0" max="100"></div>
+                <div><label>Test (%)</label><input type="number" id="rand-test-percent" class="input" value="10" min="0" max="100"></div>
             </div>
         </div>
 
-        <div style="margin-top:20px;">
-    <button id="reset-config-btn" class="btn btn-success" title="Restaurar padrão">Configurar</button>
-</div>
-
-
-
         <div class="card" style="margin-top:15px; padding:10px;">
-            <strong>📊 Resumo do Conjunto de Dados</strong>
-            <ul id="dataset-summary" style="margin-top:8px; line-height:1.5;">
-                <li>Total de imagens aleatórias: <span id="total-random">200</span></li>
-                <li>Train/Val/Test do conjunto aleatório: <span id="rand-split">140 / 40 / 20</span></li>
+            <strong>📊 Resumo do Conjunto de Dados (Estimativa)</strong>
+            <ul id="dataset-summary" style="margin-top:8px; line-height:1.5; font-size: 13px;">
+                <li>Total de imagens aleatórias (máx.): <span id="total-random">200</span></li>
+                <li>Divisão aleatória Train/Val/Test: <span id="rand-split">140 / 40 / 20</span></li>
                 <li>Total geral de imagens: <span id="total-all">1000</span></li>
-                <li>Train/Val/Test total: <span id="total-split">700 / 200 / 100</span></li>
+                <li>Divisão total Train/Val/Test: <span id="total-split">700 / 200 / 100</span></li>
             </ul>
         </div>
     </div>
 
-    
-    <label><strong>Inserir tipos de pré-processamento </strong></label>
-    <p style="font-size:0.9rem; color:#666">Selecione as técnicas:</p>
-    <div id="tipo-checkboxes" style="display:flex; flex-wrap:wrap; gap:10px; margin-bottom:20px;">
-        <label><input type="checkbox" value="Técnica 1"> Técnica 1</label>
-        <label><input type="checkbox" value="Técnica 2"> Técnica 2</label>
-        <label><input type="checkbox" value="Técnica 3"> Técnica 3</label>
+
+    <div class="card config-card" style="margin-bottom: 20px;">
+        <label><strong>3. Tipos de Pré-Processamento</strong></label>
+        <p style="font-size:0.9rem; color:var(--text-muted)">Selecione as técnicas de aumento/transformação.</p>
+        <div id="tipo-checkboxes-preprocessing" style="display:flex; flex-wrap:wrap; gap:10px;">
+            <label><input type="checkbox" value="Técnica 1"> Técnica 1</label>
+            <label><input type="checkbox" value="Técnica 2"> Técnica 2</label>
+            <label><input type="checkbox" value="Técnica 3"> Técnica 3</label>
+        </div>
     </div>
-    
-    <!-- Configuração do Treinamento -->
+
+
     <div id="config-panel" class="card config-card mt-4">
         <div class="config-header" style="display:flex;justify-content:space-between;align-items:center">
-            <strong>⚙️ Configuração de Treino (default)</strong>
+            <strong>4. ⚙️ Configuração de Treino (YOLO)</strong>
             <div>
                 <button id="reset-config-btn" class="btn btn-success" title="Restaurar padrão">Restaurar</button>
                 <button id="edit-config-btn" class="btn" title="Editar configuração">Editar</button>
@@ -111,21 +102,23 @@
         </div>
     </div>
 
+    <hr style="margin:20px 0;">
 
+    <div style="margin-top:20px;">
+        <button class="btn" id="start-training-btn">▶️ Iniciar Treinamento</button>
+    </div>
 
-    <!-- Botão de Início -->
-     <div style="margin-top:20px;">
-         <button class="btn" id="start-training-btn">▶️ Iniciar Treinamento</button>
-     </div>
-
-    <!-- Barra de progresso -->
     <div class="progress-bar" style="margin-top:10px">
         <div id="progress-fill" class="progress-fill"></div>
     </div>
 
-    <!-- Gráfico -->
-    <div class="chart-placeholder" style="margin-top:12px">Gráfico de Accuracy e Loss (simulado)</div>
+    <div style="margin-top:20px; display: flex; gap: 10px; align-items: center;">
+        <button class="btn btn-danger hidden" id="cancel-training-btn" disabled>❌ Cancelar Treinamento</button>
+    </div>
 
-    <!-- Logs -->
-    <textarea id="logs" readonly style="margin-top:12px"></textarea>
+    <h3>Log de Treinamento</h3>
+    <textarea id="logs" readonly style="margin-top:12px; background: #1e1e1e; color: #00ff00; height: 450px; overflow-y: scroll; padding: 10px; border-radius: 5px;"></textarea>
+    
+    <div class="chart-placeholder" style="margin-top:12px">Gráfico de Accuracy e Loss (simulado)</div>
+</div>
 </div>
