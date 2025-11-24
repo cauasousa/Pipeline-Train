@@ -26,7 +26,7 @@
         ];
 
         // adiciona imagens de batches
-        for (let i = 0; i < 12; i++) {
+        for (let i = 0; i < 1; i++) {
             commonNames.push(`val_batch${i}_pred.jpg`);
             commonNames.push(`val_batch${i}_labels.jpg`);
         }

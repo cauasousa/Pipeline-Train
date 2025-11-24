@@ -322,17 +322,19 @@ def run_training_job_process(job_id, config):
     # command = ["yolo", config.get('task', 'classify'), config.get('mode', 'train')] + yolo_args
     command = [YOLO_EXECUTABLE_PATH, config.get('task', 'classify'), config.get('mode', 'train')] + yolo_args
     command_str = " ".join(command)
+    # CORREÇÃO CRÍTICA: Precede o comando com a variável de ambiente Matplotlib
+    command_str_with_backend = f"MPLBACKEND='Agg' {command_str}"
 
     log_file_handle = None
 
     try:
         log_file_handle = open(log_file_path, 'w', encoding='utf-8') # FORÇA UTF-8 para escrita
             
-        log_file_handle.write(f"--- COMANDO INICIADO ---\n{command_str}\n------------------------\n")
+        log_file_handle.write(f"--- COMANDO INICIADO ---\n{command_str_with_backend}\n------------------------\n")
         log_file_handle.flush()
             
         process = subprocess.Popen(
-            command_str, 
+            command_str_with_backend, 
             shell=True,
             stdout=log_file_handle, 
             stderr=subprocess.STDOUT,
