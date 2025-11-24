@@ -64,7 +64,8 @@ def conf_dataset(dataset_config: dict, dataset_path: str):
     upload_folder_name = dataset_path.name
     
     # Define o caminho de saída do dataset customizado (onde as imagens serão copiadas)
-    base_output = Path(r"M:\Mestrado\pipeline_train\custom\datasets_custom")
+    # base_output = Path(r"custom\datasets_custom")
+    base_output = Path.cwd() / "custom" / "datasets_custom"
     output_root = base_output / f"dataset_{upload_folder_name}_{time.strftime('%Y%m%d_%H%M%S')}"
     
     # Limpa a pasta de destino (importante para evitar mix de runs)
@@ -309,6 +310,8 @@ def run_training_job_process(job_id, config):
     log_file_path = TRAINING_STATE["log_path"]
     
     # 1. Constrói o comando YOLO CLI
+    YOLO_EXECUTABLE_PATH = "/content/myenv/bin/yolo" 
+    
     # Argumentos passados diretamente para a CLI do YOLO (Ex: yolo classify train project=... epochs=...)
     yolo_args = [
         f"{k}={shlex.quote(str(v))}" 
@@ -316,7 +319,8 @@ def run_training_job_process(job_id, config):
         if k not in ['mode', 'task']
     ]
     
-    command = ["yolo", config.get('task', 'classify'), config.get('mode', 'train')] + yolo_args
+    # command = ["yolo", config.get('task', 'classify'), config.get('mode', 'train')] + yolo_args
+    command = [YOLO_EXECUTABLE_PATH, config.get('task', 'classify'), config.get('mode', 'train')] + yolo_args
     command_str = " ".join(command)
 
     log_file_handle = None
